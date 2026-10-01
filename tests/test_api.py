@@ -55,3 +55,8 @@ def test_update_missing_item_returns_404() -> None:
     )
 
     assert response.status_code == 404
+
+def test_delete_missing_item_returns_404() -> None:
+    response = client.delete("/items/9999")
+
+    assert response.status_code == 404
