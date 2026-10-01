@@ -1,16 +1,41 @@
-# Relore Benchmark Demo Repository
+# Relore Repository Memory Benchmark
 
-Phase 1 of a controlled benchmark for evaluating repository memory.
+A controlled benchmark for evaluating the incremental value of
+Relore repository memory for coding agents.
 
-## Purpose
+## Goal
 
-This repository is intentionally small. It provides enough structure to create future benchmark cases involving source code, tests, cache behavior, architectural decisions, Git history, PR discussions, and rejected approaches.
+The benchmark compares the same coding agent under two conditions:
 
-## Application
+### Baseline
 
-A minimal FastAPI CRUD API for items.
+Coding Agent + source code + tests + git + gh
 
-### Endpoints
+### Relore
+
+Coding Agent + source code + tests + git + gh + Relore
+
+The main research question is:
+
+> Does Relore help a coding agent discover and use relevant repository
+> history, resulting in better implementation decisions?
+
+## Demo Application
+
+The benchmark uses a deliberately small FastAPI application.
+
+The application manages simple `Item` objects and contains separate:
+
+- API layer
+- Service layer
+- Repository layer
+- Cache layer
+
+This architecture is intentionally small while still allowing realistic
+benchmark scenarios involving caching, validation, regressions,
+architectural decisions, and competing implementations.
+
+## API
 
 - `GET /health`
 - `GET /items`
@@ -18,21 +43,10 @@ A minimal FastAPI CRUD API for items.
 - `POST /items`
 - `DELETE /items/{id}`
 
-## Run
+## Running the Application
+
+Create and activate the virtual environment:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --app-dir src --reload
-```
-
-## Test
-
-```bash
-pytest
-```
-
-## Benchmark roadmap
-
-Phase 2 will establish the clean baseline and test suite before synthetic Git/GitHub history and controlled bug scenarios are introduced.
