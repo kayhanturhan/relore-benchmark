@@ -1,0 +1,9 @@
+[project]
+name = "relore-benchmark"
+version = "0.1.0"
+description = "Small FastAPI repository for benchmarking repository memory"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
