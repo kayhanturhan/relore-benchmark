@@ -30,3 +30,28 @@ def test_item_lifecycle() -> None:
 def test_rejects_non_positive_price() -> None:
     response = client.post("/items", json={"name": "Broken", "price": 0})
     assert response.status_code == 422
+    
+def test_update_item() -> None:
+    create_response = client.post(
+        "/items",
+        json={"name": "Laptop", "price": 1500.0},
+    )
+    item = create_response.json()
+
+    update_response = client.put(
+        f"/items/{item['id']}",
+        json={"name": "Gaming Laptop", "price": 2000.0},
+    )
+
+    assert update_response.status_code == 200
+    assert update_response.json()["name"] == "Gaming Laptop"
+    assert update_response.json()["price"] == 2000.0
+
+
+def test_update_missing_item_returns_404() -> None:
+    response = client.put(
+        "/items/9999",
+        json={"name": "Missing", "price": 100.0},
+    )
+
+    assert response.status_code == 404
