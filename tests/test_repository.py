@@ -4,7 +4,9 @@ from app.repositories.item_repository import ItemRepository
 
 def test_create_and_get_item() -> None:
     repository = ItemRepository()
-    created = repository.create(ItemCreate(name="Keyboard", price=100.0))
+    created = repository.create(
+        ItemCreate(name="Keyboard", price=100.0)
+    )
 
     assert created.id == 1
     assert repository.get(created.id) == created
@@ -12,14 +14,19 @@ def test_create_and_get_item() -> None:
 
 def test_delete_item() -> None:
     repository = ItemRepository()
-    created = repository.create(ItemCreate(name="Mouse", price=50.0))
+    created = repository.create(
+        ItemCreate(name="Mouse", price=50.0)
+    )
 
     assert repository.delete(created.id) is True
     assert repository.get(created.id) is None
 
+
 def test_update_item() -> None:
     repository = ItemRepository()
-    created = repository.create(ItemCreate(name="Keyboard", price=100.0))
+    created = repository.create(
+        ItemCreate(name="Keyboard", price=100.0)
+    )
 
     updated = repository.update(
         created.id,
@@ -41,3 +48,29 @@ def test_update_missing_item() -> None:
     )
 
     assert updated is None
+
+
+def test_item_name_is_lowercased_before_persistence() -> None:
+    repository = ItemRepository()
+
+    created = repository.create(
+        ItemCreate(name="Mechanical Keyboard", price=150.0)
+    )
+
+    assert created.name == "mechanical keyboard"
+
+
+def test_updated_item_name_is_lowercased() -> None:
+    repository = ItemRepository()
+
+    created = repository.create(
+        ItemCreate(name="Keyboard", price=100.0)
+    )
+
+    updated = repository.update(
+        created.id,
+        ItemUpdate(name="Gaming Keyboard", price=200.0),
+    )
+
+    assert updated is not None
+    assert updated.name == "gaming keyboard"
