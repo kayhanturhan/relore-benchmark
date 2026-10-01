@@ -27,7 +27,8 @@ def test_delete_invalidates_cache() -> None:
 
     assert service.cache.get(created.id) is None
 
-def test_update_invalidates_cache() -> None:
+
+def test_update_refreshes_cache() -> None:
     service = build_service()
     created = service.create_item(ItemCreate(name="Monitor", price=300.0))
 
@@ -41,4 +42,4 @@ def test_update_invalidates_cache() -> None:
 
     assert updated is not None
     assert updated.name == "Gaming Monitor"
-    assert service.cache.get(created.id) is None
+    assert service.cache.get(created.id) == updated

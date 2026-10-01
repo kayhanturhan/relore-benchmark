@@ -27,7 +27,7 @@ class ItemService:
     def update_item(self, item_id: int, payload: ItemUpdate) -> Item | None:
         updated = self.repository.update(item_id, payload)
         if updated is not None:
-            self.cache.invalidate(item_id)
+            self.cache.put(updated)
         return updated
 
     def delete_item(self, item_id: int) -> bool:
