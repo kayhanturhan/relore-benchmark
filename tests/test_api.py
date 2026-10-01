@@ -55,3 +55,11 @@ def test_update_missing_item_returns_404() -> None:
     )
 
     assert response.status_code == 404
+
+def test_rejects_whitespace_only_name() -> None:
+    response = client.post(
+        "/items",
+        json={"name": "   ", "price": 100.0},
+    )
+
+    assert response.status_code == 422
