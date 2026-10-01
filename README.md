@@ -93,19 +93,18 @@ The initial benchmark repository contains:
 - Repository layer
 - Cache layer
 - Automated tests
-- Local Ubuntu development environment
 - Git repository
 - GitHub repository
 
-The purpose of Phase 1 was to establish a small and understandable
-codebase that can later be used to create controlled repository-history
-and bug-fixing scenarios.
+Phase 1 established a deliberately small and understandable codebase
+that can be used to create controlled repository-history and
+bug-fixing scenarios.
 
 ### Phase 2 — Repository History
 
-Status: In Progress
+Status: Complete
 
-Controlled repository history is being created using:
+Controlled repository history was created using:
 
 - commits
 - feature branches
@@ -115,90 +114,126 @@ Controlled repository history is being created using:
 - review comments
 - maintainer decisions
 - rejected approaches
+- regression evidence
 - previously attempted solutions
 
-#### Completed History
+Four repository-history patterns were created.
 
-##### Issue #1 / PR #2 — Item Update Endpoint
+#### Scenario 1 — Accepted Implementation
 
-An item update capability was added to the application.
+Issue #1 / PR #2
 
-The implementation introduced:
+An item update capability was implemented.
+
+The change introduced:
 
 - `ItemUpdate`
 - repository update support
 - service update support
 - `PUT /items/{id}`
 - cache invalidation after successful updates
-- API, service, and repository tests
+- automated tests
 
-PR #2 was reviewed and merged.
+A maintainer decision was recorded that cache invalidation belongs
+in the service layer while the repository remains responsible for
+persistence.
 
-A maintainer decision was recorded stating that cache invalidation
-belongs in the service layer and that the repository should remain
-focused on persistence responsibilities.
+PR #2 was merged.
 
-##### Issue #3 / PR #4 — Write-Through Cache Experiment
+#### Scenario 2 — Rejected Architectural Approach
+
+Issue #3 / PR #4
 
 A write-through cache strategy was evaluated.
 
-The experimental implementation replaced cache invalidation with
-immediate cache updates after successful item updates.
+The proposed implementation refreshed the cache immediately after
+successful item updates instead of invalidating the cached entry.
 
-The approach appeared reasonable and passed the automated tests.
+The approach was reviewed and rejected.
 
-During review, however, the approach was rejected.
-
-The repository history preserves the maintainer decision and the
-reasoning behind keeping cache invalidation instead of write-through
-cache updates.
+The repository history records the decision to keep cache invalidation
+after writes and reload the value from the repository on the next read.
 
 PR #4 was closed without being merged.
 
-This rejected implementation is intentionally preserved as part of
-the benchmark's repository memory.
+#### Scenario 3 — Existing Fix in Another Pull Request
 
-#### Next History Scenario
+PR #5 / Issue #6
 
-The next controlled scenario will create a fix that already exists
-in another branch and pull request.
+A fix for item-name whitespace normalization exists in:
 
-The pull request will intentionally remain open.
+    fix/item-name-normalization
 
-A later benchmark issue will describe the same underlying problem.
+PR #5 contains the implementation and tests but intentionally remains
+open and unmerged.
 
-The experiment will then evaluate whether the coding agent:
+Issue #6 describes the same underlying problem.
 
-1. discovers the existing branch or pull request,
-2. understands that a fix already exists,
-3. reuses or references the existing work,
+This scenario will evaluate whether a coding agent discovers the
+existing implementation instead of independently creating a duplicate
+solution.
 
-instead of independently implementing a duplicate solution.
+#### Scenario 4 — Regression-Causing Approach
+
+Issue #7 / PR #8
+
+An experimental implementation converted persisted item names to
+lowercase in order to simplify case-insensitive duplicate handling.
+
+The implementation caused existing tests to fail because display
+casing was lost.
+
+Examples:
+
+    "Laptop" -> "laptop"
+
+    "Gaming Laptop" -> "gaming laptop"
+
+The experiment produced:
+
+    4 failed, 10 passed
+
+The approach was rejected.
+
+The maintainer decision recorded in repository history states that
+display casing must be preserved and case-insensitive comparison
+should instead use a separate normalized comparison value.
+
+PR #8 was closed without being merged.
 
 ### Phase 3 — Controlled Benchmark Cases
 
-Status: Planned
+Status: In Progress
 
-Approximately 10–20 controlled issues will be created.
+Approximately 10–20 controlled benchmark cases will be created.
 
-Some issues will be intentionally simple and solvable using only:
+The initial benchmark will use 12 cases divided into three groups:
 
-- source code
-- tests
+#### Source-Only Cases
 
-Other issues will require repository history.
+These cases should be solvable using source code and tests without
+requiring repository history.
 
-History-dependent cases may involve:
+#### History-Dependent Cases
 
-- previous architectural decisions
+These cases are designed so that repository history contains important
+information that should influence the agent's decision.
+
+#### Mixed Cases
+
+These cases can be partially understood from source code but repository
+history provides additional information that can improve the decision.
+
+The benchmark cases should include examples involving:
+
+- simple implementation bugs
+- validation behavior
+- cache behavior
+- architectural decisions
 - rejected implementations
-- regression information
-- maintainer review comments
+- regressions
 - existing fixes in another branch or pull request
-- previously attempted solutions
-
-The purpose is to create situations where repository history can
-materially influence the coding agent's implementation decision.
+- maintainer review decisions
 
 ### Phase 4 — Benchmark Execution
 
@@ -216,7 +251,7 @@ Coding Agent
 + gh
 ```
 
-The agent may inspect Git and GitHub history using the available tools.
+The agent may inspect Git and GitHub history itself.
 
 #### Relore
 
@@ -231,7 +266,7 @@ Coding Agent
 
 The same repository will be indexed by Relore.
 
-The following should remain as consistent as possible between both runs:
+The following should remain as consistent as possible between runs:
 
 - model
 - prompt
@@ -242,7 +277,7 @@ The following should remain as consistent as possible between both runs:
 
 ## Metrics
 
-For each benchmark case, the following metrics will be recorded:
+For each benchmark case, record:
 
 - bug solved
 - correct patch
@@ -255,8 +290,8 @@ For each benchmark case, the following metrics will be recorded:
 - execution time
 - cost
 
-In addition to quantitative metrics, each benchmark run should record
-the agent's investigation process.
+In addition to quantitative metrics, record the agent's investigation
+process.
 
 For each case:
 
@@ -276,11 +311,11 @@ Generated patch
 Test result
 ```
 
-Several representative cases will be analyzed in detail.
+Several representative cases should be analyzed in detail.
 
 ## Expected Result
 
-The benchmark is designed to answer the following question:
+The benchmark is designed to answer:
 
 > When the same coding agent works on the same problem, does providing
 > Relore help it use repository history more effectively and make better
