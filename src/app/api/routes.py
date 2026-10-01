@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.models.item import Item, ItemCreate
+from app.models.item import Item, ItemCreate, ItemUpdate
 from app.services.item_service import ItemService
 
 
@@ -21,6 +21,13 @@ def build_router(service: ItemService) -> APIRouter:
     @router.post("", response_model=Item, status_code=status.HTTP_201_CREATED)
     def create_item(payload: ItemCreate) -> Item:
         return service.create_item(payload)
+
+    @router.put("/{item_id}", response_model=Item)
+    def update_item(item_id: int, payload: ItemUpdate) -> Item:
+        item = service.update_item(item_id, payload)
+        if item is None:
+            raise HTTPException(status_code=404, detail="Item not found")
+        return item
 
     @router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
     def delete_item(item_id: int) -> None:

@@ -1,4 +1,4 @@
-from app.models.item import Item, ItemCreate
+from app.models.item import Item, ItemCreate, ItemUpdate
 
 
 class ItemRepository:
@@ -16,6 +16,14 @@ class ItemRepository:
         item = Item(id=self._next_id, name=payload.name, price=payload.price)
         self._items[item.id] = item
         self._next_id += 1
+        return item
+
+    def update(self, item_id: int, payload: ItemUpdate) -> Item | None:
+        if item_id not in self._items:
+            return None
+
+        item = Item(id=item_id, name=payload.name, price=payload.price)
+        self._items[item_id] = item
         return item
 
     def delete(self, item_id: int) -> bool:
