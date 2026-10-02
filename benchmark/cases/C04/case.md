@@ -48,3 +48,9 @@ The service must not return stale cached data when the repository no longer cont
 ## Validation
 
 The dedicated stale-cache test and the full test suite must pass.
+
+## Verification Command
+
+```bash
+pytest -q tests/test_service.py::test_get_item_does_not_return_stale_cached_item
+```
