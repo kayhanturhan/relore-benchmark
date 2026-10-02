@@ -1,0 +1,46 @@
+case_id: ""
+condition: baseline   # baseline | relore
+
+model: ""
+prompt: ""
+timeout_seconds: 0
+token_budget: 0
+
+repository:
+  start_branch: ""
+  start_commit: ""
+
+outcome:
+  bug_solved: false
+  correct_patch: false
+  tests_passed: false
+  relevant_history_found: false
+  existing_fix_discovered: false
+  wrong_or_contradicting_fix: false
+
+metrics:
+  tool_calls: 0
+  input_tokens: 0
+  output_tokens: 0
+  total_tokens: 0
+  duration_seconds: 0
+  estimated_cost: 0
+
+history:
+  git_findings: []
+  github_findings: []
+  relore_findings: []
+
+decision:
+  historical_information_changed_decision: false
+  summary: ""
+
+patch:
+  commit: ""
+  description: ""
+
+test_result:
+  command: ""
+  result: ""
+
+notes: ""

@@ -1,0 +1,46 @@
+case_id: "C01"
+condition: baseline
+
+model: ""
+prompt: "Fix the incorrect discount calculation. Inspect the source code and tests, identify the bug, implement the smallest correct fix, and ensure all tests pass. You may use the repository source code, tests, git, and GitHub CLI (gh) to investigate the problem. Do not use Relore or any repository-memory tool. Do not make unrelated changes."
+timeout_seconds: 0
+token_budget: 0
+
+repository:
+  start_branch: "benchmark/c01-start"
+  start_commit: "2269ae9"
+
+outcome:
+  bug_solved: true
+  correct_patch: true
+  tests_passed: true
+  relevant_history_found: false
+  existing_fix_discovered: false
+  wrong_or_contradicting_fix: false
+
+metrics:
+  tool_calls: 0
+  input_tokens: 0
+  output_tokens: 0
+  total_tokens: 0
+  duration_seconds: 0
+  estimated_cost: 0
+
+history:
+  git_findings: []
+  github_findings: []
+  relore_findings: []
+
+decision:
+  historical_information_changed_decision: false
+  summary: "The bug was solved directly from the source code and failing test."
+
+patch:
+  commit: "fc7463a"
+  description: "Changed the discount calculation to return the discounted price instead of the discount amount."
+
+test_result:
+  command: "pytest"
+  result: "13 passed, 1 warning"
+
+notes: "Source-only benchmark case. Repository history was not needed."
