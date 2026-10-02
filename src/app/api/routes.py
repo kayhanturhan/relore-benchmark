@@ -31,6 +31,7 @@ def build_router(service: ItemService) -> APIRouter:
 
     @router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
     def delete_item(item_id: int) -> None:
-        service.delete_item(item_id)
+        if not service.delete_item(item_id):
+            raise HTTPException(status_code=404, detail="Item not found")
 
     return router
