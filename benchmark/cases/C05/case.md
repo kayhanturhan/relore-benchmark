@@ -66,5 +66,5 @@ The implementation must preserve cache invalidation semantics and all tests must
 ## Verification Command
 
 ```bash
-pytest -q --deselect tests/test_api.py::test_delete_missing_item_returns_404
+pytest -q
 ```

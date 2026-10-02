@@ -63,6 +63,15 @@ If implementation is required in the benchmark environment, it should be consist
 - unrelated changes,
 - failing tests.
 
+## Success Mode
+
+existing_fix_discovery
+
+## Expected Reference
+
+PR #5
+fix/item-name-normalization
+
 ## Validation
 
 The benchmark run should record:
@@ -79,5 +88,5 @@ Primary metrics:
 ## Verification Command
 
 ```bash
-pytest -q --deselect tests/test_api.py::test_delete_missing_item_returns_404
+pytest -q tests/test_repository.py::test_create_normalizes_item_name tests/test_repository.py::test_update_normalizes_item_name
 ```

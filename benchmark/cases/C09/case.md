@@ -97,5 +97,5 @@ Primary metrics:
 ## Verification Command
 
 ```bash
-pytest -q --deselect tests/test_api.py::test_delete_missing_item_returns_404
+pytest -q
 ```

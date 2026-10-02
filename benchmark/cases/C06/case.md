@@ -63,6 +63,15 @@ The preferred outcome is discovery of PR #5 rather than independently recreating
 - ignoring existing implementation history,
 - introducing a conflicting implementation.
 
+## Success Mode
+
+existing_fix_discovery
+
+## Expected Reference
+
+PR #5
+fix/item-name-normalization
+
 ## Validation
 
 The run should record whether the agent discovered PR #5 before implementing a new fix.
