@@ -42,3 +42,18 @@ def test_update_invalidates_cache() -> None:
     assert updated is not None
     assert updated.name == "Gaming Monitor"
     assert service.cache.get(created.id) is None
+
+def test_get_item_does_not_return_stale_cached_item() -> None:
+    service = build_service()
+
+    created = service.create_item(
+        ItemCreate(name="Monitor", price=300.0)
+    )
+
+    service.get_item(created.id)
+
+    service.repository.delete(created.id)
+
+    result = service.get_item(created.id)
+
+    assert result is None
