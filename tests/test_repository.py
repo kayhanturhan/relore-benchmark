@@ -17,6 +17,7 @@ def test_delete_item() -> None:
     assert repository.delete(created.id) is True
     assert repository.get(created.id) is None
 
+
 def test_update_item() -> None:
     repository = ItemRepository()
     created = repository.create(ItemCreate(name="Keyboard", price=100.0))
@@ -41,3 +42,32 @@ def test_update_missing_item() -> None:
     )
 
     assert updated is None
+
+
+def test_create_normalizes_item_name() -> None:
+    repository = ItemRepository()
+
+    created = repository.create(
+        ItemCreate(name="  Keyboard  ", price=100.0)
+    )
+
+    assert created.name == "Keyboard"
+
+
+def test_update_normalizes_item_name() -> None:
+    repository = ItemRepository()
+
+    created = repository.create(
+        ItemCreate(name="Keyboard", price=100.0)
+    )
+
+    updated = repository.update(
+        created.id,
+        ItemUpdate(
+            name="  Mechanical Keyboard  ",
+            price=150.0,
+        ),
+    )
+
+    assert updated is not None
+    assert updated.name == "Mechanical Keyboard"
