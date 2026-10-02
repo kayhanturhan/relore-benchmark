@@ -1,0 +1,165 @@
+benchmark:
+  name: relore-repository-memory-benchmark
+  version: 1
+  cases: 12
+
+groups:
+  source_only:
+    - C01
+    - C02
+    - C03
+    - C04
+
+  history_dependent:
+    - C05
+    - C06
+    - C07
+    - C08
+
+  mixed:
+    - C09
+    - C10
+    - C11
+    - C12
+
+cases:
+  C01:
+    title: Incorrect Discount Calculation
+    group: source_only
+    start_branch: benchmark/c01-start
+    relevant_history: []
+    expected_history_required: false
+    validation:
+      - dedicated discount test passes
+      - full test suite passes
+
+  C02:
+    title: Item Name Validation Edge Case
+    group: source_only
+    start_branch: benchmark/c02-start
+    relevant_history: []
+    expected_history_required: false
+    validation:
+      - whitespace-only item names return HTTP 422
+      - full test suite passes
+
+  C03:
+    title: Incorrect HTTP Status for Missing Item Deletion
+    group: source_only
+    start_branch: benchmark/c03-start
+    relevant_history: []
+    expected_history_required: false
+    validation:
+      - deleting a missing item returns HTTP 404
+      - valid deletes still return HTTP 204
+      - full test suite passes
+
+  C04:
+    title: Stale Cache Returns Deleted Item
+    group: source_only
+    start_branch: benchmark/c04-start
+    relevant_history: []
+    expected_history_required: false
+    validation:
+      - stale cached item is not returned
+      - valid cache behavior remains intact
+      - full test suite passes
+
+  C05:
+    title: Avoid Rejected Write-Through Cache Strategy
+    group: history_dependent
+    start_branch: benchmark/c05-start
+    relevant_history:
+      - PR #4
+    expected_history_required: true
+    validation:
+      - write-through cache strategy is avoided
+      - cache invalidation semantics are preserved
+      - full test suite passes
+
+  C06:
+    title: Existing Fix Already Available in Open Pull Request
+    group: history_dependent
+    start_branch: benchmark/c06-start
+    relevant_history:
+      - Issue #6
+      - PR #5
+    expected_history_required: true
+    validation:
+      - existing fix is discovered
+      - duplicate implementation is avoided
+
+  C07:
+    title: Avoid Previously Rejected Lowercase Persistence
+    group: history_dependent
+    start_branch: benchmark/c07-start
+    relevant_history:
+      - Issue #7
+      - PR #8
+    expected_history_required: true
+    validation:
+      - PR #8 regression is discovered
+      - persisted lowercase strategy is avoided
+      - display casing is preserved
+
+  C08:
+    title: Preserve Service-Layer Cache Responsibility
+    group: history_dependent
+    start_branch: benchmark/c08-start
+    relevant_history:
+      - PR #2
+    expected_history_required: true
+    validation:
+      - service-layer cache responsibility is preserved
+      - repository remains focused on persistence
+
+  C09:
+    title: Update and Cache Consistency
+    group: mixed
+    start_branch: benchmark/c09-start
+    relevant_history:
+      - PR #2
+      - PR #4
+    expected_history_required: beneficial
+    validation:
+      - write-through cache is avoided
+      - repository cache coupling is avoided
+      - invalidation-based strategy is preserved
+
+  C10:
+    title: Name Normalization During Updates
+    group: mixed
+    start_branch: benchmark/c10-start
+    relevant_history:
+      - PR #5
+    expected_history_required: beneficial
+    validation:
+      - PR #5 is discovered
+      - duplicate implementation is avoided or reused consistently
+
+  C11:
+    title: Case-Insensitive Comparison Without Losing Display Casing
+    group: mixed
+    start_branch: benchmark/c11-start
+    relevant_history:
+      - PR #8
+    expected_history_required: beneficial
+    validation:
+      - display casing is preserved
+      - comparison uses separate normalization logic
+      - rejected lowercase persistence is avoided
+
+  C12:
+    title: Competing Implementation Decisions
+    group: mixed
+    start_branch: benchmark/c12-start
+    relevant_history:
+      - PR #2
+      - PR #4
+      - PR #8
+    expected_history_required: beneficial
+    validation:
+      - service/repository boundaries are preserved
+      - write-through cache is avoided
+      - display casing is preserved
+      - conflicting historical decisions are reconciled correctly
