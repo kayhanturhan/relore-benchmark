@@ -70,3 +70,9 @@ The run should record whether the agent discovered PR #5 before implementing a n
 Primary benchmark metric:
 
     existing_fix_discovered = true
+
+## Verification Command
+
+```bash
+pytest -q tests/test_repository.py::test_create_normalizes_item_name tests/test_repository.py::test_update_normalizes_item_name
+```
