@@ -48,3 +48,9 @@ Deleting a missing item should return HTTP 404.
 ## Validation
 
 The dedicated API test and the full test suite must pass.
+
+## Verification Command
+
+```bash
+pytest -q tests/test_api.py::test_delete_missing_item_returns_404
+```
