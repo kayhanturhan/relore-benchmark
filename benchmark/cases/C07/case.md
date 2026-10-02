@@ -88,3 +88,9 @@ Primary metrics:
     relevant_history_found = true
     wrong_or_contradicting_fix = false
     
+
+## Verification Command
+
+```bash
+pytest -q --deselect tests/test_api.py::test_delete_missing_item_returns_404
+```

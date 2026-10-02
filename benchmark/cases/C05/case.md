@@ -62,3 +62,9 @@ If a code change is required, it must remain consistent with the maintainer deci
 ## Validation
 
 The implementation must preserve cache invalidation semantics and all tests must pass.
+
+## Verification Command
+
+```bash
+pytest -q --deselect tests/test_api.py::test_delete_missing_item_returns_404
+```

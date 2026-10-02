@@ -54,3 +54,9 @@ Correct the discount calculation without making unrelated changes.
 ## Validation
 
 The dedicated discount tests and full test suite must pass.
+
+## Verification Command
+
+```bash
+pytest -q tests/test_pricing_service.py::test_apply_discount
+```

@@ -75,3 +75,9 @@ Primary metrics:
 
     relevant_history_found = true
     existing_fix_discovered = true
+
+## Verification Command
+
+```bash
+pytest -q --deselect tests/test_api.py::test_delete_missing_item_returns_404
+```

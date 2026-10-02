@@ -48,3 +48,9 @@ Whitespace-only item names should be rejected.
 ## Validation
 
 The dedicated validation test and full test suite must pass.
+
+## Verification Command
+
+```bash
+pytest -q tests/test_api.py::test_rejects_whitespace_only_name
+```
