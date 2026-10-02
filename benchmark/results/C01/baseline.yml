@@ -14,15 +14,16 @@ prompt: >-
 
 
   Do not make unrelated changes.
-timeout_seconds: 900
-token_budget: not_enforced_by_cursor_sdk
+limits:
+  timeout_seconds: 900
+  token_budget_enforced: false
 repository:
-  start_branch: runs/c01-baseline-sdk
+  start_branch: runs/c01-relore-sdk
   start_commit: 2269ae92857c1b6dec51ee999dae2159db2f9296
 run:
-  agent_id: agent-10055c75-5a0e-4e88-8dcb-e2eae19a3f1f
-  run_id: run-98527346-7a5f-40fc-ac9b-c085a32bc2c1
-  request_id: c109fc61-8594-4a91-b4ba-12a8a983e742
+  agent_id: agent-d73e67b1-fe77-4dfe-ad45-82b217c4c2f8
+  run_id: run-8cee7889-4eda-437c-8b4f-239af972c8f6
+  request_id: 06c50814-d8b8-4ef1-861b-3f9da5c3d238
   status: finished
 outcome:
   bug_solved: true
@@ -33,19 +34,20 @@ outcome:
   wrong_or_contradicting_fix: false
 metrics:
   tool_calls: 8
-  input_tokens: 55226
-  output_tokens: 785
-  cache_read_tokens: 42368
+  input_tokens: 54878
+  output_tokens: 753
+  cache_read_tokens: 39168
   cache_write_tokens: 0
   reasoning_tokens: 0
-  total_tokens: 98379
-  duration_seconds: 13.79
+  total_tokens: 94799
+  duration_seconds: 14.714
   billing_status: unavailable_for_account
   raw_cost_cents: unavailable_for_account
   charged_cents: unavailable_for_account
   estimated_cost: unavailable_for_account
 tools:
   relore_available: false
+  relore_required: false
   relore_used: false
   calls:
     - name: grep
@@ -135,21 +137,24 @@ test_result:
 
     -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 
-    ======================== 13 passed, 1 warning in 0.37s
+    ======================== 13 passed, 1 warning in 0.32s
     =========================
 final_agent_response: >-
   ## Bug
 
 
-  `apply_discount` in `pricing_service.py` computed the **discount amount**
-  (`price * percentage / 100`), so `apply_discount(200.0, 10.0)` returned
-  **20.0** instead of the **price after discount**.
+  `apply_discount` in `src/app/services/pricing_service.py` was computing the
+  **discount amount** (`price × percentage / 100`), not the **price after the
+  discount**.
+
+
+  For `apply_discount(200.0, 10.0)` that yielded `20.0` instead of `180.0`.
 
 
   ## Fix
 
 
-  Return the discounted price by subtracting the percentage from 100%:
+  Return the discounted price by subtracting the percentage from the full price:
 
 
   ```python
@@ -159,9 +164,5 @@ final_agent_response: >-
   ```
 
 
-  For 200 at 10% off, that yields **180.0**, which matches
-  `test_apply_discount`.
-
-
-  All **13** tests pass.
+  All 13 tests pass, including `test_apply_discount`.
 git_status_after_run: M src/app/services/pricing_service.py
